@@ -38,10 +38,10 @@ export default function DictionaryPage() {
   const allWords = activeTab === 'all' ? use(getCachedData('all', fetchWordsSummary)) : [];
 
   return (
-    <div className="flex flex-col h-full bg-sub-background relative overflow-hidden">
+    <div className="flex flex-col h-full bg-white relative overflow-hidden">
       
       {/* Absolute Header Overlay */}
-      <div className="absolute top-0 left-0 w-full z-50 bg-sub-background/95 backdrop-blur-md pb-4">
+      <div className="absolute top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md pb-4">
         <AppHeader title="학습 사전" backHref="/" />
         
         {/* Tabs */}

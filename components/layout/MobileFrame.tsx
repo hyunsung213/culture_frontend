@@ -11,7 +11,7 @@ export default function MobileFrame({ children, className }: MobileFrameProps) {
     <div className="min-h-screen bg-sub-background flex justify-center">
       <div
         className={clsx(
-          "w-full max-w-[390px] h-[100dvh] bg-background relative shadow-sm flex flex-col py-[40px] overflow-hidden",
+          "w-full max-w-[390px] h-[100dvh] bg-background relative shadow-sm flex flex-col overflow-hidden",
           className
         )}
       >

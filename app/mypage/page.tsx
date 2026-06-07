@@ -29,9 +29,9 @@ export default function MyPage() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-[#f8f8f8] relative overflow-hidden">
+    <div className="flex flex-col h-full bg-white relative overflow-hidden">
       {/* Absolute Header Overlay */}
-      <div className="absolute top-0 left-0 w-full z-50 bg-[#f8f8f8]/95 backdrop-blur-md pb-2 shadow-sm border-b border-gray-100">
+      <div className="absolute top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md pb-2 shadow-sm border-b border-gray-100">
         <AppHeader title="마이페이지" />
       </div>
 
