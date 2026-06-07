@@ -21,12 +21,15 @@ export const dummyFeedback: Feedback = {
   grammarFeedback:
     "‘정이 들다’는 장소와 함께 사용할 때 보통 조사 ‘에’를 사용합니다.",
   naturalExpression: "이 카페에 자주 오다 보니까 정들었어요.",
+  tpoBestFit: "이 카페에 자주 오다 보니까 정들었어요.",
   politeExpression: "이 카페에 자주 오다 보니 정이 들었어요.",
   casualExpression: "나 여기 이제 좀 정들었어.",
   writingExpression: "이 카페에 자주 오다 보니 어느새 정이 들었다.",
   tip:
     "‘정’은 직접 설명하기보다, 오래 함께한 시간이나 따뜻한 기억과 함께 쓰면 더 자연스럽습니다.",
   tags: ["조사 오류", "표현 결합", "구어체 개선"],
+  meaningCorrect: true,
+  grammarCorrect: false,
 };
 
 export const dummySavedExpressions: SavedExpression[] = [

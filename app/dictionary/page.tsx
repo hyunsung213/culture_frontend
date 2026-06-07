@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import AppHeader from "@/components/layout/AppHeader";
 import SavedExpressionCard from "@/components/cards/SavedExpressionCard";
 import { getSavedExpressions, fetchWordsSummary } from "@/lib/api";
@@ -11,6 +11,15 @@ import { SavedExpression } from "@/types/expression";
 
 export default function DictionaryPage() {
   const [activeTab, setActiveTab] = useState<'all' | 'saved'>('saved');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <div className="h-full bg-sub-background" />;
+  }
   
   let savedExpressions = [] as SavedExpression[];
   if (activeTab === 'saved') {
