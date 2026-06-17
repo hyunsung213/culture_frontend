@@ -24,12 +24,12 @@ export default function WritingScreen({ expression, onNext, onSubmit, isLoading,
   };
 
   return (
-    <div className="flex flex-col flex-1 w-full bg-white overflow-hidden">
+    <div className="flex flex-col flex-1 w-full bg-white overflow-hidden relative">
       {/* Header Area */}
       <div className="px-6 pt-6 pb-2 flex-shrink-0">
         <div className="flex justify-between items-center mb-3">
           <span className="text-[#f66b1e] font-extrabold text-[14px]">
-            {t.wordOfTheDay}
+            {t.learn.wordOfTheDay}
           </span>
         </div>
         <div className="h-1.5 w-full bg-[#f8f8f8] rounded-full overflow-hidden">
@@ -47,9 +47,9 @@ export default function WritingScreen({ expression, onNext, onSubmit, isLoading,
           className="space-y-6 my-auto w-full"
         >
           <div className="space-y-3 pt-2">
-            <h2 className="text-[22px] font-bold text-[#222222] leading-snug">
-              {t.writeYourSentence}<br />
-              <span className="text-[14px] text-[#575757] font-medium mt-2 inline-block">
+            <h2 className="text-[20px] font-bold text-[#222222] leading-snug">
+              {t.learn.writeYourSentence}<br />
+              <span className="text-[13px] text-[#575757] font-medium mt-2 inline-block">
                 ㅣ<span className="text-[#f66b1e]">"{expression.korean}"</span>
               </span>
             </h2>
@@ -60,7 +60,7 @@ export default function WritingScreen({ expression, onNext, onSubmit, isLoading,
               value={text}
               onChange={(e) => setText(e.target.value)}
               disabled={isLoading}
-              placeholder="여기에 문장을 입력하세요..."
+              placeholder={t.learn.writePlaceholder}
               className="w-full h-full p-5 bg-white border border-[#f66b1e] rounded-[20px] focus:outline-none focus:ring-2 focus:ring-[#f66b1e]/20 focus:border-[#f66b1e] resize-none text-[16px] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-[#222222]"
             />
             {error && (
@@ -69,7 +69,7 @@ export default function WritingScreen({ expression, onNext, onSubmit, isLoading,
           </div>
 
           <div className="bg-[#f66b1e]/10 rounded-[20px] p-5 border border-[#f66b1e]/20 mt-4 text-left">
-            <h3 className="font-bold text-[#f66b1e] text-[14px] mb-2">💡 예시</h3>
+            <h3 className="font-bold text-[#f66b1e] text-[14px] mb-2">💡 {t.learn.exampleTip}</h3>
             <p className="text-[#222222] text-[14px]">
               {expression.modelSentenceKo}
             </p>
@@ -80,9 +80,35 @@ export default function WritingScreen({ expression, onNext, onSubmit, isLoading,
       <BottomButton
         onClick={handleSubmit}
         disabled={text.trim().length === 0 || isLoading}
+        variant="outline"
       >
-        {isLoading ? "AI가 문장 검증 중..." : "AI가 문장 검증하기"}
+        {t.learn.verifyAI}
       </BottomButton>
+
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/60 backdrop-blur-md">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="flex flex-col items-center"
+          >
+            <motion.img 
+              animate={{ y: [0, -15, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              src="/assets/tiger_with_ball.png" 
+              alt="Verifying" 
+              className="w-[120px] h-[120px] object-contain drop-shadow-lg" 
+            />
+            <motion.p 
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="mt-6 text-[18px] font-extrabold text-[#f66b1e] tracking-wide"
+            >
+              {t.learn.verifyingAI}
+            </motion.p>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

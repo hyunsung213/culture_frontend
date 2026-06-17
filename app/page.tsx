@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import AppHeader from "@/components/layout/AppHeader";
+import { useLanguage } from "@/context/LanguageContext";
+import { ChevronLeft } from "lucide-react";
 import StartScreen from "@/components/learn/StartScreen";
 import WordIntroScreen from "@/components/learn/WordIntroScreen";
 import WritingScreen from "@/components/learn/WritingScreen";
@@ -23,6 +24,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const { t } = useLanguage();
   const router = useRouter();
 
   useEffect(() => {
@@ -128,12 +130,12 @@ export default function Home() {
   const getHeaderTitle = () => {
     switch (step) {
       case 0: return "";
-      case 1: return "오늘의 표현";
-      case 2: return "오늘의 표현";
-      case 3: return "문장 작성";
-      case 4: return "AI 피드백";
-      case 5: return "자연스러운 표현";
-      case 6: return "학습 완료";
+      case 1: return t.learn.wordOfTheDay;
+      case 2: return t.learn.wordOfTheDay;
+      case 3: return t.learn.writing;
+      case 4: return t.learn.aiFeedback;
+      case 5: return t.learn.naturalExpression;
+      case 6: return t.learn.learningComplete;
       default: return "";
     }
   };
@@ -145,7 +147,7 @@ export default function Home() {
   if (step > 0 && !expression) {
     return (
       <div className="flex flex-col h-full bg-[#fefefe] items-center justify-center">
-        <p>데이터를 불러오는 중입니다...</p>
+        <p>{t.common.loadingData}</p>
       </div>
     );
   }
@@ -158,10 +160,9 @@ export default function Home() {
           <div className="w-24 h-24 bg-[#f66b1e]/10 rounded-full flex items-center justify-center mb-6">
             <span className="text-4xl">🎉</span>
           </div>
-          <h2 className="text-2xl font-black text-[#222222] mb-2">모든 학습을 완료했어요!</h2>
-          <p className="text-[#575757] text-[15px] leading-relaxed">
-            준비된 모든 단어를 학습하셨습니다.<br />
-            정말 대단해요!
+          <h2 className="text-2xl font-black text-[#222222] mb-2">{t.learn.allCompletedTitle}</h2>
+          <p className="text-[#575757] text-[15px] leading-relaxed whitespace-pre-line">
+            {t.learn.allCompletedDesc}
           </p>
         </div>
       </div>
@@ -170,12 +171,19 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-full bg-background relative">
-      {step > 0 && step < 6 && (
-        <AppHeader title={getHeaderTitle()} onBack={prevStep} />
-      )}
-      
-      {step === 6 && (
-        <AppHeader title={getHeaderTitle()} onBack={restart} />
+      {step > 0 && (
+        <div className="px-5 flex items-center pt-6 pb-4 relative shrink-0">
+          <button 
+            onClick={step === 6 ? restart : prevStep} 
+            className="absolute left-3 p-2 text-text-main hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <div className="flex items-center gap-1.5 w-full justify-center">
+            <h1 className="text-[20px] font-bold text-[#222222]">{getHeaderTitle()}</h1>
+            <img src="/assets/logo_mini.png" alt="Logo" className="w-6 h-6 object-contain -mt-0.5" />
+          </div>
+        </div>
       )}
 
       {step === 0 && <StartScreen expression={expression} progress={progress} onNext={handleStartLearning} onReview={handleReviewWord} />}

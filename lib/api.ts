@@ -134,3 +134,12 @@ export async function resetPassword(payload: { resetToken: string; newPassword: 
     body: JSON.stringify(payload),
   });
 }
+
+export async function pingBackend(): Promise<void> {
+  try {
+    // Simply to wake up the backend if it's sleeping (e.g., Render/Heroku)
+    await fetch(`${API_BASE_URL}/`, { method: "GET" });
+  } catch (error) {
+    // Ignore errors for ping
+  }
+}

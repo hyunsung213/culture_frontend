@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "./LanguageContext";
 
 interface TransitionContextType {
   navigateTo: (url: string) => void;
@@ -16,6 +17,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   const [isPending, startTransition] = React.useTransition();
   const [artificialLoading, setArtificialLoading] = useState(false);
   const router = useRouter();
+  const { t } = useLanguage();
 
   const runWithTransition = (action: () => void) => {
     setArtificialLoading(true);
@@ -32,14 +34,22 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       return;
     }
     
-    // Ensure loading screen shows for at least 1 second
+    // 1. 최소 1.5초 동안 로딩 화면이 유지되도록 강제 상태(artificialLoading)를 켭니다.
     setArtificialLoading(true);
-    startTransition(() => {
-      router.push(url);
-    });
+    
+    // 2. 1.5초 뒤에 강제 로딩 상태를 해제합니다.
     setTimeout(() => {
       setArtificialLoading(false);
-    }, 1000);
+    }, 1500);
+
+    // 3. 페이드 애니메이션 시간(0.3초) 대기 후 라우팅 시작
+    // 이렇게 하면 로딩창이 100% 불투명해진 뒤에 뒷배경 페이지가 바뀌므로
+    // 갑작스럽게 화면이 바뀌는 현상을 방지하고 부드러운 페이드 아웃/인 효과를 줍니다.
+    setTimeout(() => {
+      startTransition(() => {
+        router.push(url);
+      });
+    }, 300);
   };
 
   const showLoading = isPending || artificialLoading;
@@ -75,7 +85,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
               className="text-[#f66b1e] text-[18px] font-extrabold tracking-widest"
             >
-              로딩중....
+              {t.common.loading}
             </motion.p>
           </motion.div>
         )}

@@ -2,31 +2,15 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+import { ko, Translations } from "../locales/ko";
+import { en } from "../locales/en";
+import { useEffect } from "react";
+
 type Language = "en" | "ko";
 
-interface Translations {
-  wordOfTheDay: string;
-  meaning: string;
-  exampleSentence: string;
-  tip: string;
-  writeYourSentence: string;
-}
-
 const translations: Record<Language, Translations> = {
-  en: {
-    wordOfTheDay: "Word of the Day",
-    meaning: "MEANING",
-    exampleSentence: "Example Sentence",
-    tip: "TIP",
-    writeYourSentence: "Write your own sentence using today’s word.",
-  },
-  ko: {
-    wordOfTheDay: "오늘의 단어",
-    meaning: "의미",
-    exampleSentence: "예시 문장",
-    tip: "참고",
-    writeYourSentence: "오늘의 단어를 사용해 문장을 만들어보세요.",
-  },
+  en,
+  ko,
 };
 
 interface LanguageContextType {
@@ -39,10 +23,22 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("ko");
+  const [language, setLanguageState] = useState<Language>("ko");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("language") as Language;
+    if (saved && (saved === "ko" || saved === "en")) {
+      setLanguageState(saved);
+    }
+  }, []);
+
+  const setLanguage = (lang: Language) => {
+    localStorage.setItem("language", lang);
+    setLanguageState(lang);
+  };
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "ko" : "en"));
+    setLanguage(language === "en" ? "ko" : "en");
   };
 
   const t = translations[language];

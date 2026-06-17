@@ -1,15 +1,19 @@
 "use client";
 
 import { useState, use, useEffect } from "react";
-import AppHeader from "@/components/layout/AppHeader";
+import { ChevronLeft } from "lucide-react";
 import SavedExpressionCard from "@/components/cards/SavedExpressionCard";
 import { getSavedExpressions, fetchWordsSummary } from "@/lib/api";
 import { mapSavedExpression } from "@/utils/mappers";
 import { getCachedData } from "@/lib/dataCache";
 import BottomNav from "@/components/layout/BottomNav";
 import { SavedExpression } from "@/types/expression";
+import { useTransition } from "@/context/TransitionContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function DictionaryPage() {
+  const { navigateTo } = useTransition();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'all' | 'saved'>('saved');
   const [isClient, setIsClient] = useState(false);
 
@@ -40,37 +44,44 @@ export default function DictionaryPage() {
   return (
     <div className="flex flex-col h-full bg-white relative overflow-hidden">
       
-      {/* Absolute Header Overlay */}
-      <div className="absolute top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md pb-4">
-        <AppHeader title="학습 사전" backHref="/" />
+      {/* Scrollable Container */}
+      <div className="absolute inset-0 pb-[80px] w-full overflow-y-auto [&::-webkit-scrollbar]:hidden pt-6">
+        
+        {/* Page Title & Back Button */}
+        <div className="px-5 flex items-center mb-8 relative">
+          <button onClick={() => navigateTo("/")} className="absolute left-3 p-2 text-text-main hover:bg-gray-100 rounded-full transition-colors">
+            <ChevronLeft size={24} />
+          </button>
+          <div className="flex items-center gap-1.5 w-full justify-center">
+            <h1 className="text-[20px] font-bold text-[#222222]">{t.dictionary.title}</h1>
+            <img src="/assets/logo_mini.png" alt="Logo" className="w-6 h-6 object-contain -mt-0.5" />
+          </div>
+        </div>
         
         {/* Tabs */}
-        <div className="flex px-5 mt-2 space-x-4 border-b border-gray-200">
+        <div className="flex px-5 space-x-4 border-b border-gray-200">
           <button 
             className={`pb-2 text-[15px] font-bold transition-colors ${activeTab === 'saved' ? 'text-[#f66b1e] border-b-2 border-[#f66b1e]' : 'text-[#575757]'}`}
             onClick={() => setActiveTab('saved')}
           >
-            내 사전
+            {t.dictionary.myDictionary}
           </button>
           <button 
             className={`pb-2 text-[15px] font-bold transition-colors ${activeTab === 'all' ? 'text-[#f66b1e] border-b-2 border-[#f66b1e]' : 'text-[#575757]'}`}
             onClick={() => setActiveTab('all')}
           >
-            전체 단어
+            {t.dictionary.allWords}
           </button>
         </div>
 
-        <div className="px-5 mt-4">
-          <h1 className="text-xl font-bold text-text-main">총 {activeTab === 'all' ? allWords.length : savedExpressions.length}개</h1>
+        <div className="px-5 mt-6 mb-4">
+          <h1 className="text-xl font-bold text-text-main">{t.dictionary.totalCount.replace('{count}', String(activeTab === 'all' ? allWords.length : savedExpressions.length))}</h1>
           <p className="text-text-sub text-xs mt-0.5">
-            {activeTab === 'all' ? "전체 학습 가능한 표현들이에요" : "지금까지 학습한 표현들이에요"}
+            {activeTab === 'all' ? t.dictionary.allWordsDesc : t.dictionary.savedWordsDesc}
           </p>
         </div>
-      </div>
 
-      {/* Scrollable Container */}
-      <div className="absolute inset-0 pb-[80px] w-full overflow-y-auto [&::-webkit-scrollbar]:hidden pt-[180px]">
-        <div className="p-5">
+        <div className="px-5">
           {activeTab === 'saved' ? (
             savedExpressions.map((expression) => (
               <SavedExpressionCard key={expression.id} expression={expression} />
@@ -83,9 +94,6 @@ export default function DictionaryPage() {
                     {word.korean}
                     <span className="text-[15px] font-normal text-[#575757]">{word.romanization}</span>
                   </h2>
-                  <span className="bg-[#f66b1e]/10 text-[#f66b1e] text-[11px] px-2 py-1 rounded-full font-bold">
-                    {word.difficulty}
-                  </span>
                 </div>
                 <p className="text-[#222222] font-bold text-[15px] mb-1">{word.englishTitle}</p>
                 <div className="mt-4 space-y-1">
@@ -97,7 +105,7 @@ export default function DictionaryPage() {
           )}
           
           {activeTab === 'saved' && savedExpressions.length === 0 && (
-            <p className="text-center text-text-sub mt-10">아직 저장된 표현이 없습니다.</p>
+            <p className="text-center text-text-sub mt-10">{t.dictionary.emptySaved}</p>
           )}
         </div>
       </div>

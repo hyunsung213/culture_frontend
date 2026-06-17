@@ -24,12 +24,12 @@ export default function BottomButton({
         onClick={onClick}
         disabled={disabled}
         className={clsx(
-          "w-full py-4 rounded-2xl text-lg font-bold transition-colors flex items-center justify-center gap-2 border-2",
+          "w-full h-[56px] rounded-[16px] text-[16px] font-bold transition-colors flex items-center justify-center gap-2 border-[1.5px]",
           {
-            "bg-primary text-white border-primary hover:bg-orange-600": variant === "primary" && !disabled,
-            "bg-sub-background text-text-main border-transparent hover:bg-gray-200": variant === "secondary" && !disabled,
-            "bg-white text-primary border-primary hover:bg-primary-light": variant === "outline" && !disabled,
-            "bg-border text-text-sub border-border cursor-not-allowed opacity-70": disabled,
+            "bg-[#f66b1e] text-white border-[#f66b1e] hover:bg-[#e05b13] shadow-[0_8px_20px_rgba(246,107,30,0.25)]": variant === "primary" && !disabled,
+            "bg-[#f8f8f8] text-[#575757] border-transparent hover:bg-gray-200": variant === "secondary" && !disabled,
+            "bg-white text-[#f66b1e] border-[#f66b1e] hover:bg-[#f66b1e]/10 shadow-[0_8px_20px_rgba(246,107,30,0.1)]": variant === "outline" && !disabled,
+            "bg-[#e2e4e9] text-[#a0a5b1] border-transparent cursor-not-allowed": disabled,
           },
           className
         )}

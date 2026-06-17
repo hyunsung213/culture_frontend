@@ -2,15 +2,17 @@ import { Home, BookOpen, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useTransition } from "@/context/TransitionContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function BottomNav() {
   const pathname = usePathname();
   const { navigateTo } = useTransition();
+  const { t } = useLanguage();
 
   const tabs = [
-    { name: "학습 사전", href: "/dictionary", icon: BookOpen },
-    { name: "홈", href: "/", icon: Home },
-    { name: "마이페이지", href: "/mypage", icon: User },
+    { name: t.nav.dictionary, href: "/dictionary", icon: BookOpen },
+    { name: t.nav.home, href: "/", icon: Home },
+    { name: t.nav.mypage, href: "/mypage", icon: User },
   ];
 
   return (

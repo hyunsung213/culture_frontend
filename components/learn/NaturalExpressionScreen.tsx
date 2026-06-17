@@ -15,7 +15,7 @@ export default function NaturalExpressionScreen({ feedback, onNext }: NaturalExp
       <div className="px-6 pt-6 pb-2 flex-shrink-0">
         <div className="flex justify-between items-center mb-3">
           <span className="text-[#f66b1e] font-extrabold text-[14px]">
-            {t.wordOfTheDay}
+            {t.learn.wordOfTheDay}
           </span>
         </div>
         <div className="h-1.5 w-full bg-[#f8f8f8] rounded-full overflow-hidden">
@@ -40,14 +40,14 @@ export default function NaturalExpressionScreen({ feedback, onNext }: NaturalExp
             
             <div className="flex items-center gap-1.5 bg-white px-2.5 py-0.5 rounded-full border border-[#f66b1e]/20 w-fit mb-2 relative z-20">
               <span className="bg-[#f66b1e] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                AI 제안
+                {t.learn.aiSuggestion}
               </span>
               <span className="text-[#f66b1e] font-bold text-[12px]">
-                자연스러운 표현
+                {t.learn.naturalExpression}
               </span>
             </div>
             
-            <p className="text-[17px] font-bold text-[#222222] mt-3 mb-4 leading-relaxed">
+            <p className="text-[16px] font-bold text-[#222222] mt-3 mb-4 leading-relaxed">
               {feedback.naturalExpression}
             </p>
             
@@ -55,21 +55,21 @@ export default function NaturalExpressionScreen({ feedback, onNext }: NaturalExp
               <div className="flex flex-col gap-1">
                 <span className="text-[11px] text-[#f66b1e] font-bold flex items-center gap-1">
                   {feedback.tpoBestFit === "공적" && <span className="text-[#f66b1e]">★</span>} 
-                  공적 | Formal
+                  {t.learn.formal}
                 </span>
                 <p className="text-[13px] text-[#222222] font-semibold bg-[#f66b1e]/10 p-2.5 rounded-[12px] border border-[#f66b1e]/20">{feedback.politeExpression}</p>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-[11px] text-[#f66b1e] font-bold flex items-center gap-1">
                   {feedback.tpoBestFit === "사적" && <span className="text-[#f66b1e]">★</span>} 
-                  사적 | Semi-formal
+                  {t.learn.semiFormal}
                 </span>
                 <p className="text-[13px] text-[#222222] font-semibold bg-[#f66b1e]/10 p-2.5 rounded-[12px] border border-[#f66b1e]/20">{feedback.writingExpression}</p>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-[11px] text-[#f66b1e] font-bold flex items-center gap-1">
                   {feedback.tpoBestFit === "반격식" && <span className="text-[#f66b1e]">★</span>} 
-                  비격식 | Casual
+                  {t.learn.casual}
                 </span>
                 <p className="text-[13px] text-[#222222] font-semibold bg-[#f66b1e]/10 p-2.5 rounded-[12px] border border-[#f66b1e]/20">{feedback.casualExpression}</p>
               </div>
@@ -79,7 +79,7 @@ export default function NaturalExpressionScreen({ feedback, onNext }: NaturalExp
       </div>
 
       <BottomButton onClick={onNext}>
-        끝내기
+        {t.learn.finish}
       </BottomButton>
     </div>
   );

@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { User, Key, Globe, ChevronRight } from "lucide-react";
+import { User, Key, Globe, ChevronRight, ChevronLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import AppHeader from "@/components/layout/AppHeader";
+import Link from "next/link";
 import BottomNav from "@/components/layout/BottomNav";
 import { useLanguage } from "@/context/LanguageContext";
+import { useTransition } from "@/context/TransitionContext";
 
 export default function MyPage() {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const { user, isAuthenticated, isLoading, logout } = useAuth();
   const router = useRouter();
+  const { navigateTo } = useTransition();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -25,27 +27,35 @@ export default function MyPage() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="flex h-full items-center justify-center">Loading...</div>;
+    return <div className="flex h-full items-center justify-center">{t.common.loading}</div>;
   }
 
   return (
     <div className="flex flex-col h-full bg-white relative overflow-hidden">
-      {/* Absolute Header Overlay */}
-      <div className="absolute top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md pb-2 shadow-sm border-b border-gray-100">
-        <AppHeader title="마이페이지" />
-      </div>
-
       {/* Scrollable Container */}
-      <div className="absolute inset-0 pb-[80px] w-full overflow-y-auto [&::-webkit-scrollbar]:hidden pt-[90px]">
-        <div className="p-5 flex flex-col space-y-5 pb-[20px]">
+      <div className="absolute inset-0 pb-[80px] w-full overflow-y-auto [&::-webkit-scrollbar]:hidden pt-6 flex flex-col">
+        
+        {/* Page Title & Back Button */}
+        <div className="px-5 flex items-center mb-8 relative shrink-0">
+          <button onClick={() => navigateTo("/")} className="absolute left-3 p-2 text-text-main hover:bg-gray-100 rounded-full transition-colors">
+            <ChevronLeft size={24} />
+          </button>
+          <div className="flex items-center gap-1.5 w-full justify-center">
+            <h1 className="text-[20px] font-bold text-[#222222]">{t.mypage.title}</h1>
+            <img src="/assets/logo_mini.png" alt="Logo" className="w-6 h-6 object-contain -mt-0.5" />
+          </div>
+        </div>
+
+        <div className="px-5 flex flex-col space-y-5 pb-[20px] flex-1 justify-center">
+          
           
           {/* Profile Info */}
           <div className="bg-white rounded-[20px] p-6 shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-gray-100 flex items-center gap-5">
-            <div className="w-[60px] h-[60px] bg-[#f66b1e]/10 rounded-full flex items-center justify-center text-[#f66b1e] shadow-inner flex-shrink-0">
-              <User className="w-7 h-7" />
+            <div className="w-[60px] h-[60px] bg-[#f66b1e]/10 rounded-full flex items-center justify-center shadow-inner flex-shrink-0 overflow-hidden relative">
+              <img src="/assets/tiger_with_heart.png" alt="User Avatar" className="w-full h-full object-cover translate-y-1" />
             </div>
             <div>
-              <p className="text-[#575757] text-[13px] font-semibold mb-1">유저 아이디</p>
+              <p className="text-[#575757] text-[13px] font-semibold mb-1">{t.mypage.userId}</p>
               <p className="text-[#222222] text-[20px] font-black tracking-tight">{user?.loginId}</p>
             </div>
           </div>
@@ -53,12 +63,15 @@ export default function MyPage() {
           {/* Settings Section */}
           <div className="bg-white rounded-[20px] shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-gray-100 overflow-hidden">
             
-            <div className="px-6 py-5 border-b border-[#f8f8f8] flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors">
+            <div 
+              onClick={() => navigateTo("/forgot-password")}
+              className="px-6 py-5 border-b border-[#f8f8f8] flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors"
+            >
               <div className="flex items-center gap-4 text-[#222222] font-bold text-[16px] w-full">
                 <div className="w-[40px] h-[40px] rounded-full bg-[#f8f8f8] flex items-center justify-center text-[#575757] flex-shrink-0">
                   <Key className="w-5 h-5" />
                 </div>
-                <span>비밀번호 변경</span>
+                <span>{t.mypage.changePassword}</span>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-300 flex-shrink-0" />
             </div>
@@ -68,7 +81,7 @@ export default function MyPage() {
                 <div className="w-[40px] h-[40px] rounded-full bg-[#f8f8f8] flex items-center justify-center text-[#575757] flex-shrink-0">
                   <Globe className="w-5 h-5" />
                 </div>
-                <span>언어 설정</span>
+                <span>{t.mypage.languageSetting}</span>
               </div>
               
               <div className="flex gap-3">
@@ -80,7 +93,7 @@ export default function MyPage() {
                       : "border-gray-200 bg-white text-gray-400 hover:bg-gray-50"
                   }`}
                 >
-                  한국어
+                  {t.mypage.korean}
                 </button>
                 <button 
                   onClick={() => setLanguage("en")}
@@ -90,7 +103,7 @@ export default function MyPage() {
                       : "border-gray-200 bg-white text-gray-400 hover:bg-gray-50"
                   }`}
                 >
-                  English
+                  {t.mypage.english}
                 </button>
               </div>
             </div>
@@ -101,9 +114,9 @@ export default function MyPage() {
           <div className="pt-2">
             <button 
               onClick={handleLogout}
-              className="w-full py-4 text-gray-400 font-bold text-[14px] hover:text-gray-600 transition-colors bg-white rounded-[20px] border border-gray-100 shadow-[0_8px_20px_rgba(0,0,0,0.02)]"
+              className="w-full py-4 text-red-500 font-bold text-[14px] hover:bg-red-50 hover:text-red-600 transition-colors bg-white rounded-[20px] border border-red-100 shadow-[0_8px_20px_rgba(0,0,0,0.02)]"
             >
-              로그아웃
+              {t.mypage.logout}
             </button>
           </div>
 

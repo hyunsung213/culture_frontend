@@ -17,7 +17,7 @@ export default function WordIntroScreen({ expression, mode, onNext }: WordIntroS
       <div className="px-6 pt-6 pb-2 flex-shrink-0">
         <div className="flex justify-between items-center mb-3">
           <span className="text-[#f66b1e] font-extrabold text-[14px]">
-            {mode === "meaning" ? t.wordOfTheDay : t.exampleSentence}
+            {mode === "meaning" ? t.learn.wordOfTheDay : t.learn.exampleSentence}
           </span>
         </div>
         <div className="h-1.5 w-full bg-[#f8f8f8] rounded-full overflow-hidden">
@@ -37,20 +37,20 @@ export default function WordIntroScreen({ expression, mode, onNext }: WordIntroS
         >
 
           <div className="flex-shrink-0">
-            <h1 className="text-[40px] font-black text-[#222222] flex items-end gap-3 leading-none">
+            <h1 className="text-[32px] font-black text-[#222222] flex items-end gap-3 leading-none">
               {expression.korean}
-              <span className="text-[20px] text-[#575757] font-normal pb-1">{expression.romanization}</span>
+              <span className="text-[16px] text-[#575757] font-normal pb-1">{expression.romanization}</span>
             </h1>
           </div>
 
           {mode === "meaning" ? (
             /* Meaning Card */
             <div className="bg-white border border-[#f8f8f8] shadow-[0_8px_20px_rgba(0,0,0,0.03)] rounded-[20px] p-6 space-y-4">
-              <h3 className="font-extrabold text-[#f66b1e] text-[14px] uppercase tracking-widest">{t.meaning}</h3>
-              <p className="text-[#222222] font-bold text-[18px] leading-relaxed">
+              <h3 className="font-extrabold text-[#f66b1e] text-[13px] uppercase tracking-widest">{t.learn.meaning}</h3>
+              <p className="text-[#222222] font-bold text-[16px] leading-relaxed">
                 "{expression.shortMeaningKo}"
               </p>
-              <p className="text-[#575757] text-[15px] leading-relaxed">
+              <p className="text-[#575757] text-[14px] leading-relaxed">
                 {expression.shortMeaningEn}
               </p>
             </div>
@@ -58,18 +58,18 @@ export default function WordIntroScreen({ expression, mode, onNext }: WordIntroS
             /* Example Sentence & Tip Card */
             <div className="space-y-5">
               <div className="bg-white border border-[#f8f8f8] rounded-[20px] p-6 space-y-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] relative">
-                <p className="text-[#f66b1e] text-[24px] font-black italic leading-none">"</p>
-                <p className="text-[#222222] font-bold text-[18px] leading-relaxed mt-1 z-10 relative">
+                <p className="text-[#f66b1e] text-[20px] font-black italic leading-none">"</p>
+                <p className="text-[#222222] font-bold text-[16px] leading-relaxed mt-1 z-10 relative">
                   {expression.modelSentenceKo}
                 </p>
-                <p className="text-[#575757] text-[14px] border-t border-[#f8f8f8] pt-4 z-10 relative pr-4">
+                <p className="text-[#575757] text-[13px] border-t border-[#f8f8f8] pt-4 z-10 relative pr-4">
                   {expression.modelSentenceEn}
                 </p>
-                <p className="absolute bottom-6 right-6 text-[#f66b1e] text-[24px] font-black italic leading-none rotate-180">"</p>
+                <p className="absolute bottom-6 right-6 text-[#f66b1e] text-[20px] font-black italic leading-none rotate-180">"</p>
               </div>
 
               <div className="bg-[#f66b1e]/10 rounded-[20px] p-6 border border-[#f66b1e]/20">
-                <h3 className="font-bold text-[#f66b1e] text-[14px] mb-3">💡 {t.tip}</h3>
+                <h3 className="font-bold text-[#f66b1e] text-[14px] mb-3">💡 {t.learn.tip}</h3>
                 <p className="text-[#222222] text-[14px] leading-relaxed">
                   {expression.usageTip}
                 </p>
@@ -79,8 +79,8 @@ export default function WordIntroScreen({ expression, mode, onNext }: WordIntroS
         </motion.div>
       </div>
 
-      <BottomButton onClick={onNext} variant={mode === "meaning" ? "primary" : "outline"}>
-        {mode === "meaning" ? "예시 문장 보기 >" : "내가 직접 문장 만들기 >"}
+      <BottomButton onClick={onNext} variant="outline">
+        {mode === "meaning" ? t.learn.seeExample : t.learn.createSentence}
       </BottomButton>
     </div>
   );

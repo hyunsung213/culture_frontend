@@ -9,6 +9,11 @@ import BottomNav from "../layout/BottomNav";
 import { ApiWordSummary, ApiWordTodayProgress } from "../../types/api";
 import { fetchWordsSummary } from "../../lib/api";
 
+const pseudoRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
 interface StartScreenProps {
   expression: Expression | null;
   progress?: ApiWordTodayProgress;
@@ -58,7 +63,7 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
     setTimeout(() => {
       const activeStepEl = document.getElementById("step-active");
       if (activeStepEl) {
-        activeStepEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        activeStepEl.scrollIntoView({ behavior: "auto", block: "center" });
       }
     }, 100);
   }, [allWords, progress]);
@@ -98,13 +103,13 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
 
       {/* Fixed Header & Word of the Day Card (Absolute Overlay) */}
       <div className="absolute top-0 left-0 w-full z-50 bg-white/40 backdrop-blur-md pt-[4%] pb-[4%] px-6">
-        <h1 className="text-[22px] font-black text-[#222222]">안녕하세요!</h1>
-        <p className="text-[#575757] text-[13px] font-medium mt-1">오늘도 한 걸음, 마음을 배워봐요✨</p>
+        <h1 className="text-[22px] font-black text-[#222222]">{t.start.greeting}</h1>
+        <p className="text-[#575757] text-[13px] font-medium mt-1">{t.start.greetingDesc}</p>
 
         {/* Word of the Day Card */}
         <div className="bg-white/60 backdrop-blur-lg rounded-[20px] p-[5%] shadow-[0_8px_20px_rgba(0,0,0,0.03)] relative mt-[5%]">
           <div className="flex justify-between items-start mb-[2%]">
-            <span className="text-[#f66b1e] font-bold text-[12px]">{t.wordOfTheDay}</span>
+            <span className="text-[#f66b1e] font-bold text-[12px]">{t.learn.wordOfTheDay}</span>
           </div>
           <h2 className="text-[24px] font-black text-[#222222] flex items-end gap-2 mb-[2%]">
             {expression ? expression.korean : "..."}
@@ -113,7 +118,7 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
             </span>
           </h2>
           <p className="text-[#222222] text-[12px] font-medium leading-relaxed">
-            {expression ? expression.shortMeaningKo : "오늘의 표현을 불러오고 있습니다..."}
+            {expression ? expression.shortMeaningKo : t.start.loadingExpression}
           </p>
         </div>
       </div>
@@ -137,7 +142,7 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
       >
 
         {/* Roadmap Section */}
-        <div className="w-full flex flex-col gap-[35px] pt-[125px] pb-[80px]">
+        <div className="w-full flex flex-col gap-[35px] pt-[40px] pb-[80px]">
           {steps.map((step, index) => {
             const nextStep = steps[index + 1];
             return (
@@ -197,11 +202,15 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
                     <div className="relative w-[90%] max-w-[340px] bg-white rounded-2xl px-5 py-4 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-black/5 flex justify-between items-center z-20">
                       <div>
                         <p className="text-[12px] font-bold text-[#f66b1e] mb-1">
-                          {step.status === "locked" ? "잠겨있어요" : step.status === "active" ? "오늘의 표현" : "학습완료"}
+                          {step.status === "locked" ? t.start.locked : step.status === "active" ? t.start.todayExpression : t.start.completed}
                         </p>
                         <p className="text-[16px] font-black text-[#222222] flex items-center gap-1">
-                          {step.wordKorean ? `${step.wordKorean} ` : ""}
-                          {step.status === "locked" ? "퀴즈하기" : step.status === "active" ? "학습하기" : "복습하기"}
+                          {step.status != "locked" && step.wordKorean && (
+                            <span className="text-[#f66b1e]">
+                              "{step.wordKorean}"
+                            </span>
+                          )}
+                          {step.status === "locked" ? t.start.lockedDesc : step.status === "active" ? t.start.study : t.start.review}
                         </p>
                       </div>
 
@@ -216,20 +225,38 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
               </AnimatePresence>
 
               {/* Dduck (Rice Cake) Image scattered in empty space */}
-              {nextStep && (step.left >= 70 || step.left <= 30) && (
-                <div 
-                  className="absolute z-0 pointer-events-none drop-shadow-md opacity-90"
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    top: '70px',
-                    left: `${step.left >= 70 ? 30 + (index % 3) * 5 : 70 - (index % 3) * 5}%`,
-                    transform: `translateX(-50%) rotate(${index % 2 === 0 ? 15 : -15}deg)`
-                  }}
-                >
-                  <Image src={`/assets/dduck${(index % 3) + 1}.png`} alt="떡" fill sizes="56px" className="object-contain" />
-                </div>
-              )}
+              {nextStep && (() => {
+                const rand = pseudoRandom(step.id);
+                const rand2 = pseudoRandom(step.id + 100);
+                const rand3 = pseudoRandom(step.id + 200);
+
+                let safeLeft;
+                if (step.left >= 60) {
+                  safeLeft = 15 + rand * 20; // 15% to 35%
+                } else if (step.left <= 40) {
+                  safeLeft = 65 + rand * 20; // 65% to 85%
+                } else {
+                  safeLeft = rand > 0.5 ? 10 + rand2 * 15 : 75 + rand2 * 15; // 10-25% or 75-90%
+                }
+                
+                const randomTop = 10 + rand2 * 70; // 10px to 80px
+                const randomRotate = -40 + rand3 * 80; // -40deg to 40deg
+
+                return (
+                  <div 
+                    className="absolute z-0 pointer-events-none drop-shadow-md opacity-90"
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      top: `${randomTop}px`,
+                      left: `${safeLeft}%`,
+                      transform: `translateX(-50%) rotate(${randomRotate}deg)`
+                    }}
+                  >
+                    <Image src={`/assets/dduck${(index % 3) + 1}.png`} alt="떡" fill sizes="56px" className="object-contain" />
+                  </div>
+                );
+              })()}
             </div>
           );
         })}
