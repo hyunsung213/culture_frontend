@@ -7,6 +7,7 @@ import { useLanguage } from "../../context/LanguageContext";
 interface FeedbackScreenProps {
   feedback: Feedback;
   onNext: () => void;
+  onRetry?: () => void;
 }
 
 // 교정문에서 달라진 단어를 하이라이트 (교정문 전용)
