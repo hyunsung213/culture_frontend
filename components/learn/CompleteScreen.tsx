@@ -31,7 +31,7 @@ export default function CompleteScreen({ expression, feedback, onRestart }: Comp
             <p className="text-[#575757] font-medium text-[13px]">{t.learn.completeDesc}</p>
           </div>
 
-          <div className="bg-white rounded-[20px] p-5 w-full text-left space-y-3 shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-[#f8f8f8]">
+          <div className="bg-white rounded-[16px] p-5 w-full text-left space-y-3 shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-[#f8f8f8]">
             <div>
               <h3 className="text-[11px] font-bold text-[#575757] mb-1.5">{t.learn.learnedExpression}</h3>
               <p className="text-[20px] font-extrabold text-[#f66b1e]">

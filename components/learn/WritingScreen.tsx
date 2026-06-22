@@ -57,14 +57,14 @@ export default function WritingScreen({ expression, onNext, onSubmit, isLoading,
               onChange={(e) => setText(e.target.value)}
               disabled={isLoading}
               placeholder={t.learn.writePlaceholder}
-              className="w-full h-full p-5 bg-white border border-[#f66b1e] rounded-[20px] focus:outline-none focus:ring-2 focus:ring-[#f66b1e]/20 focus:border-[#f66b1e] resize-none text-[16px] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-[#222222]"
+              className="w-full h-full p-5 bg-white border border-[#f66b1e] rounded-[16px] focus:outline-none focus:ring-2 focus:ring-[#f66b1e]/20 focus:border-[#f66b1e] resize-none text-[16px] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-[#222222]"
             />
             {error && (
               <p className="absolute -bottom-[25px] left-[10px] text-red-500 text-[12px]">{error}</p>
             )}
           </div>
 
-          <div className="bg-[#f66b1e]/10 rounded-[20px] p-5 border border-[#f66b1e]/20 mt-4 text-left">
+          <div className="bg-[#f66b1e]/10 rounded-[16px] p-5 border border-[#f66b1e]/20 mt-4 text-left">
             <h3 className="font-bold text-[#f66b1e] text-[14px] mb-2">💡 {t.learn.exampleTip}</h3>
             <p className="text-[#222222] text-[14px]">
               {expression.modelSentenceKo}

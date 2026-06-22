@@ -49,7 +49,7 @@ export default function MyPage() {
           
           
           {/* Profile Info */}
-          <div className="bg-white rounded-[20px] p-6 shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-gray-100 flex items-center gap-5">
+          <div className="bg-white rounded-[16px] p-6 shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-gray-100 flex items-center gap-5">
             <div className="w-[60px] h-[60px] bg-[#f66b1e]/10 rounded-full flex items-center justify-center shadow-inner flex-shrink-0 overflow-hidden relative">
               <img src="/assets/tiger_with_heart.png" alt="User Avatar" className="w-full h-full object-cover translate-y-1" />
             </div>
@@ -60,7 +60,7 @@ export default function MyPage() {
           </div>
 
           {/* Settings Section */}
-          <div className="bg-white rounded-[20px] shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-[16px] shadow-[0_8px_20px_rgba(0,0,0,0.03)] border border-gray-100 overflow-hidden">
             
             <div 
               onClick={() => navigateTo("/forgot-password")}
@@ -86,7 +86,7 @@ export default function MyPage() {
               <div className="flex gap-3">
                 <button 
                   onClick={() => setLanguage("ko")}
-                  className={`flex-1 py-3 rounded-[15px] font-bold text-[14px] transition-all border ${
+                  className={`flex-1 py-3 rounded-[16px] font-bold text-[14px] transition-all border ${
                     language === "ko" 
                       ? "border-[#f66b1e] bg-[#f66b1e]/10 text-[#f66b1e] shadow-sm" 
                       : "border-gray-200 bg-white text-gray-400 hover:bg-gray-50"
@@ -96,7 +96,7 @@ export default function MyPage() {
                 </button>
                 <button 
                   onClick={() => setLanguage("en")}
-                  className={`flex-1 py-3 rounded-[15px] font-bold text-[14px] transition-all border ${
+                  className={`flex-1 py-3 rounded-[16px] font-bold text-[14px] transition-all border ${
                     language === "en" 
                       ? "border-[#f66b1e] bg-[#f66b1e]/10 text-[#f66b1e] shadow-sm" 
                       : "border-gray-200 bg-white text-gray-400 hover:bg-gray-50"
@@ -113,7 +113,7 @@ export default function MyPage() {
           <div className="pt-2">
             <button 
               onClick={handleLogout}
-              className="w-full py-4 text-red-500 font-bold text-[14px] hover:bg-red-50 hover:text-red-600 transition-colors bg-white rounded-[20px] border border-red-100 shadow-[0_8px_20px_rgba(0,0,0,0.02)]"
+              className="w-full py-4 text-red-500 font-bold text-[14px] hover:bg-red-50 hover:text-red-600 transition-colors bg-white rounded-[16px] border border-red-100 shadow-[0_8px_20px_rgba(0,0,0,0.02)]"
             >
               {t.mypage.logout}
             </button>

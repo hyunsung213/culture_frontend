@@ -125,7 +125,7 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
 
         {/* Word of the Day Card — sticky: 스크롤 시 자연스럽게 올라와서 상단에 고정 */}
         <div className="sticky top-0 z-50 px-6 pb-[4%]">
-          <div className="bg-white/60 backdrop-blur-lg rounded-[20px] p-[5%] shadow-[0_8px_20px_rgba(0,0,0,0.08)] border border-white/40 relative">
+          <div className="bg-white/60 backdrop-blur-lg rounded-[16px] p-[5%] shadow-[0_8px_20px_rgba(0,0,0,0.08)] border border-white/40 relative">
             <div className="flex justify-between items-start mb-[2%]">
               <span className="text-[#f66b1e] font-bold text-[12px]">{t.learn.wordOfTheDay}</span>
             </div>

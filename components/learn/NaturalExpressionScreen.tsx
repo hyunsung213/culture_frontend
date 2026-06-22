@@ -29,7 +29,7 @@ export default function NaturalExpressionScreen({ feedback, onNext }: NaturalExp
           className="space-y-4 w-full py-10"
         >
 
-          <div className="bg-white border-2 border-[#f66b1e]/20 rounded-[20px] p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] relative mt-10">
+          <div className="bg-white border-2 border-[#f66b1e]/20 rounded-[16px] p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] relative mt-10">
             <div className="absolute -top-[55px] -right-2 w-[80px] h-[80px] pointer-events-none z-10">
               <img src="/assets/tiger_sitting.png" alt="Tiger Sitting Mascot" className="w-full h-full object-contain drop-shadow-md" />
             </div>

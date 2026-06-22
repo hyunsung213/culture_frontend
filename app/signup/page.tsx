@@ -101,7 +101,7 @@ export default function SignupPage() {
                 onChange={(e) => setQuizAnswer(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSignup()}
                 placeholder={t.signup.answerPlaceholder}
-                className="w-full h-[56px] px-5 bg-[#f8f8f8] rounded-[16px] border border-transparent focus:border-[#f66b1e] focus:bg-white transition-all outline-none text-[16px] font-medium text-[#222222] placeholder:text-gray-400"
+                className="w-full h-[50px] px-5 bg-[#f8f8f8] rounded-[16px] border border-transparent focus:border-[#f66b1e] focus:bg-white transition-all outline-none text-[16px] font-medium text-[#222222] placeholder:text-gray-400"
               />
               <p className="absolute -bottom-[22px] left-[4px] text-[12px] text-gray-400 font-medium">{t.signup.answerDesc}</p>
             </div>

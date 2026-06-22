@@ -200,7 +200,7 @@ export default function FeedbackScreen({ feedback, onNext, onRetry }: FeedbackSc
           </div>
 
           {/* 문장 비교 카드 */}
-          <div className="rounded-[18px] bg-white border border-[#eee] shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden mb-5">
+          <div className="rounded-[16px] bg-white border border-[#eee] shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden mb-5">
             {/* 내가 쓴 문장 */}
             <div className="px-5 pt-5 pb-4">
               <div className="flex items-center gap-1.5 mb-2.5">

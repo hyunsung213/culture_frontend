@@ -14,7 +14,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 export default function DictionaryPage() {
   const SkeletonCard = () => (
-    <div className="bg-white rounded-[10px] p-6 border border-black/5 shadow-[0_1px_4px_rgba(12,12,13,0.05),_0_1px_4px_rgba(12,12,13,0.1)] mb-4 animate-pulse">
+    <div className="bg-white rounded-[16px] p-6 border border-black/5 shadow-[0_1px_4px_rgba(12,12,13,0.05),_0_1px_4px_rgba(12,12,13,0.1)] mb-4 animate-pulse">
       <div className="flex justify-between items-start mb-2">
         <div className="h-8 bg-gray-200 rounded-md w-1/3"></div>
       </div>
@@ -153,7 +153,7 @@ export default function DictionaryPage() {
               ))
             ) : (
               allWords.map((word) => (
-                <div key={word.id} className="bg-white rounded-[10px] p-6 border border-black/5 shadow-[0_1px_4px_rgba(12,12,13,0.05),_0_1px_4px_rgba(12,12,13,0.1)] mb-4">
+                <div key={word.id} className="bg-white rounded-[16px] p-6 border border-black/5 shadow-[0_1px_4px_rgba(12,12,13,0.05),_0_1px_4px_rgba(12,12,13,0.1)] mb-4">
                   <div className="flex justify-between items-start mb-2">
                     <h2 className="text-[24px] font-extrabold text-[#f66b1e] flex items-baseline gap-3">
                       {word.korean}
