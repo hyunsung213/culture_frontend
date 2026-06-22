@@ -94,6 +94,12 @@ export async function completeLearningLog(wordId: string): Promise<ApiLearningLo
   });
 }
 
+export async function resetLearningLogs(): Promise<void> {
+  return fetchJson<void>("/api/learning-logs/me", {
+    method: "DELETE",
+  });
+}
+
 // === Auth APIs ===
 
 export async function register(payload: any): Promise<ApiAuthResponse> {

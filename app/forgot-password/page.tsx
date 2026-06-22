@@ -5,9 +5,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getPasswordQuiz, verifyPasswordQuiz, resetPassword } from "@/lib/api";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [loginId, setLoginId] = useState("");
@@ -24,7 +26,7 @@ export default function ForgotPasswordPage() {
   const handleFetchQuiz = async () => {
     setError("");
     if (!loginId) {
-      setError("아이디를 입력해주세요.");
+      setError(t.login.emptyError); // Reusing login's empty error or similar, but wait, there is no ID only error. I'll just use t.forgotPassword.invalidId to be safe or emptyAnswer. Let's use invalidId
       return;
     }
 
@@ -34,7 +36,7 @@ export default function ForgotPasswordPage() {
       setQuizQuestion(res.quizQuestion);
       setStep(2);
     } catch (err: any) {
-      setError("잘못된 ID입니다.");
+      setError(t.forgotPassword.invalidId);
     } finally {
       setIsLoading(false);
     }
@@ -43,7 +45,7 @@ export default function ForgotPasswordPage() {
   const handleVerifyAnswer = async () => {
     setError("");
     if (!quizAnswer) {
-      setError("정답을 입력해주세요.");
+      setError(t.forgotPassword.emptyAnswer);
       return;
     }
     
@@ -54,10 +56,10 @@ export default function ForgotPasswordPage() {
         setResetToken(res.resetToken);
         setStep(3);
       } else {
-        setError("틀린 대답입니다.");
+        setError(t.forgotPassword.wrongAnswer);
       }
     } catch (err: any) {
-      setError("틀린 대답입니다.");
+      setError(t.forgotPassword.wrongAnswer);
     } finally {
       setIsLoading(false);
     }
@@ -66,17 +68,17 @@ export default function ForgotPasswordPage() {
   const handleResetPassword = async () => {
     setError("");
     if (!newPassword || !confirmPassword) {
-      setError("새 비밀번호를 모두 입력해주세요.");
+      setError(t.forgotPassword.emptyNewPassword);
       return;
     }
     
     if (newPassword !== confirmPassword) {
-      setError("비밀번호가 일치하지 않습니다.");
+      setError(t.forgotPassword.passwordMismatch);
       return;
     }
 
     if (!resetToken) {
-      setError("인증 세션이 만료되었습니다. 처음부터 다시 시도해주세요.");
+      setError(t.forgotPassword.sessionExpired);
       setStep(1);
       return;
     }
@@ -84,25 +86,25 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
     try {
       await resetPassword({ resetToken, newPassword });
-      setSuccessMessage("비밀번호가 성공적으로 변경되었습니다.");
+      setSuccessMessage(t.forgotPassword.success);
       setTimeout(() => {
         router.push("/login");
       }, 2000);
     } catch (err: any) {
-      setError(err.message || "비밀번호 재설정에 실패했습니다.");
+      setError(err.message || t.forgotPassword.failed);
     } finally {
       setIsLoading(false);
     }
   };
 
   const getStepText = () => {
-    if (step === 1) return "가입하신 아이디를 입력해주세요.";
-    if (step === 2) return "가입 시 설정한 질문에 답변해주세요.";
-    return "새로운 비밀번호를 설정해주세요.";
+    if (step === 1) return t.forgotPassword.step1Desc;
+    if (step === 2) return t.forgotPassword.step2Desc;
+    return t.forgotPassword.step3Desc;
   };
 
   return (
-    <div className="flex flex-col h-full bg-white px-6 justify-between pt-[5%] pb-[5%]">
+    <div className="flex flex-col h-full bg-white px-6 justify-between pt-[5%] pb-[5%] overflow-hidden">
       <motion.div
         key={step}
         initial={{ y: 20, opacity: 0 }}
@@ -111,7 +113,7 @@ export default function ForgotPasswordPage() {
         className="w-full flex flex-col h-full max-w-sm mx-auto"
       >
         <div className="flex flex-col items-center flex-shrink-0 mt-[10%] mb-[30%]">
-          <h1 className="text-[28px] font-black text-[#f66b1e] tracking-tight">비밀번호 찾기</h1>
+          <h1 className="text-[28px] font-black text-[#f66b1e] tracking-tight">{t.forgotPassword.title}</h1>
           <p className="text-[#575757] text-[15px] mt-2 font-medium text-center">
             {getStepText()}
           </p>
@@ -121,13 +123,13 @@ export default function ForgotPasswordPage() {
           <div className="w-full space-y-[15%]">
             {step === 1 && (
               <div className="relative">
-                <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">아이디</span>
+                <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">{t.login.id}</span>
                 <input 
                   type="text" 
                   value={loginId}
                   onChange={(e) => setLoginId(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleFetchQuiz()}
-                  placeholder="아이디를 입력해주세요"
+                  placeholder={t.login.idPlaceholder}
                   className="w-full h-[50px] px-5 bg-[#f8f8f8] rounded-[16px] border border-transparent focus:border-[#f66b1e] focus:bg-white transition-all outline-none text-[16px] font-medium text-[#222222] placeholder:text-gray-400"
                 />
               </div>
@@ -136,18 +138,18 @@ export default function ForgotPasswordPage() {
             {step === 2 && (
               <div className="space-y-[15%] w-full">
                 <div className="bg-[#f8f8f8] p-5 rounded-[16px] border border-transparent text-center">
-                  <span className="text-[12px] font-bold text-[#f66b1e] block mb-1">질문</span>
+                  <span className="text-[12px] font-bold text-[#f66b1e] block mb-1">{t.forgotPassword.quiz}</span>
                   <p className="text-[#222222] font-bold text-[16px]">{quizQuestion}</p>
                 </div>
                 
                 <div className="relative">
-                  <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">답변</span>
+                  <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">{t.signup.answerLabel}</span>
                   <input 
                     type="text" 
                     value={quizAnswer}
                     onChange={(e) => setQuizAnswer(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleVerifyAnswer()}
-                    placeholder="답변을 입력해주세요"
+                    placeholder={t.signup.answerPlaceholder}
                     className="w-full h-[50px] px-5 bg-[#f8f8f8] rounded-[16px] border border-transparent focus:border-[#f66b1e] focus:bg-white transition-all outline-none text-[16px] font-medium text-[#222222] placeholder:text-gray-400"
                   />
                 </div>
@@ -157,23 +159,23 @@ export default function ForgotPasswordPage() {
             {step === 3 && (
               <div className="space-y-[15%] w-full">
                 <div className="relative">
-                  <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">새 비밀번호</span>
+                  <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">{t.forgotPassword.newPassword}</span>
                   <input 
                     type="password" 
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="새 비밀번호를 입력해주세요"
+                    placeholder={t.forgotPassword.newPasswordPlaceholder}
                     className="w-full h-[50px] px-5 bg-[#f8f8f8] rounded-[16px] border border-transparent focus:border-[#f66b1e] focus:bg-white transition-all outline-none text-[16px] font-medium text-[#222222] placeholder:text-gray-400"
                   />
                 </div>
                 <div className="relative">
-                  <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">새 비밀번호 확인</span>
+                  <span className="absolute -top-[24px] left-[4px] text-[#575757] text-[14px] font-bold">{t.forgotPassword.confirmPassword}</span>
                   <input 
                     type="password" 
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleResetPassword()}
-                    placeholder="한 번 더 입력해주세요"
+                    placeholder={t.forgotPassword.confirmPlaceholder}
                     className="w-full h-[50px] px-5 bg-[#f8f8f8] rounded-[16px] border border-transparent focus:border-[#f66b1e] focus:bg-white transition-all outline-none text-[16px] font-medium text-[#222222] placeholder:text-gray-400"
                   />
                 </div>
@@ -185,7 +187,7 @@ export default function ForgotPasswordPage() {
           
           <div className="w-full flex justify-center mt-[5%] gap-2 px-1">
             <Link href="/login" className="text-[13px] text-[#575757] font-semibold hover:text-[#f66b1e] transition-colors">
-              로그인으로 돌아가기
+              {t.forgotPassword.backToLogin}
             </Link>
           </div>
         </div>
@@ -198,7 +200,7 @@ export default function ForgotPasswordPage() {
             disabled={isLoading || !!successMessage}
             className="w-full h-[56px] bg-[#f66b1e] text-white rounded-[16px] flex items-center justify-center font-bold text-[18px] shadow-[0_8px_20px_rgba(246,107,30,0.25)] hover:bg-[#e05b13] transition-colors disabled:opacity-50"
           >
-            {isLoading ? "처리 중..." : step === 1 || step === 2 ? "다음" : "비밀번호 재설정"}
+            {isLoading ? t.forgotPassword.processing : step === 1 || step === 2 ? t.forgotPassword.next : t.forgotPassword.resetBtn}
           </button>
         </div>
       </motion.div>

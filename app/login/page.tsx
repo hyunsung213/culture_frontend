@@ -42,7 +42,7 @@ export default function LoginPage() {
     }
   };
   return (
-    <div className="flex flex-col h-full bg-white px-6 justify-between pt-[5%] pb-[5%]">
+    <div className="flex flex-col h-full bg-white px-6 justify-between pt-[5%] pb-[5%] overflow-hidden">
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

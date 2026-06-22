@@ -12,11 +12,13 @@ import FeedbackScreen from "@/components/learn/FeedbackScreen";
 import NaturalExpressionScreen from "@/components/learn/NaturalExpressionScreen";
 import CompleteScreen from "@/components/learn/CompleteScreen";
 import { Expression, Feedback } from "@/types/expression";
-import { fetchTodayWord, startLearningLog, submitSentenceFeedback, saveExpression, completeLearningLog, fetchWordById } from "@/lib/api";
+import { fetchTodayWord, startLearningLog, submitSentenceFeedback, saveExpression, completeLearningLog, fetchWordById, resetLearningLogs } from "@/lib/api";
 import { mapWordToExpression, mapFeedbackResponse } from "@/utils/mappers";
 
 export default function Home() {
   const [step, setStep] = useState(0);
+  const [showPreparing, setShowPreparing] = useState(false);
+  const [hideCelebration, setHideCelebration] = useState(false);
   const [expression, setExpression] = useState<Expression | null>(null);
   const [progress, setProgress] = useState<any>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
@@ -153,7 +155,41 @@ export default function Home() {
   }
 
   // Handle all completed
-  if (step === 0 && progress?.allCompleted) {
+  if (step === 0 && progress?.allCompleted && !hideCelebration) {
+    if (showPreparing) {
+      return (
+        <div className="flex flex-col h-full bg-background relative overflow-hidden">
+          <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+            <div className="w-24 h-24 bg-[#f66b1e]/10 rounded-full flex items-center justify-center mb-6">
+              <span className="text-4xl">🚀</span>
+            </div>
+            <h2 className="text-xl font-bold text-[#222222] mb-2 whitespace-pre-line leading-relaxed">
+              {t.learn.preparingNewWords}
+            </h2>
+          </div>
+          
+          <div className="px-6 pb-6">
+            <button
+              onClick={async () => {
+                setShowPreparing(false);
+                setHideCelebration(false);
+                try {
+                  await resetLearningLogs();
+                  loadWordData();
+                  setStep(0);
+                } catch (error) {
+                  console.error("Failed to reset logs", error);
+                }
+              }}
+              className="w-full bg-[#f66b1e] text-white h-14 rounded-full font-bold text-lg shadow-md hover:bg-[#e05a12] transition-colors"
+            >
+              {t.learn.home}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="flex flex-col h-full bg-background relative overflow-hidden">
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
@@ -164,6 +200,15 @@ export default function Home() {
           <p className="text-[#575757] text-[15px] leading-relaxed whitespace-pre-line">
             {t.learn.allCompletedDesc}
           </p>
+        </div>
+
+        <div className="px-6 pb-6">
+          <button
+            onClick={() => setShowPreparing(true)}
+            className="w-full bg-[#f66b1e] text-white h-14 rounded-full font-bold text-lg shadow-md hover:bg-[#e05a12] transition-colors"
+          >
+            {t.learn.next}
+          </button>
         </div>
       </div>
     );
@@ -201,7 +246,7 @@ export default function Home() {
         />
       )}
       
-      {step === 4 && feedback && <FeedbackScreen feedback={feedback} onNext={nextStep} />}
+      {step === 4 && feedback && <FeedbackScreen feedback={feedback} onNext={nextStep} onRetry={() => setStep(3)} />}
       {step === 5 && feedback && <NaturalExpressionScreen feedback={feedback} onNext={handleCompleteLearning} />}
       {step === 6 && expression && feedback && <CompleteScreen expression={expression} feedback={feedback} onRestart={restart} />}
     </div>

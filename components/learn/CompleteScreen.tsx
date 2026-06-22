@@ -24,8 +24,8 @@ export default function CompleteScreen({ expression, feedback, onRestart }: Comp
           className="w-full space-y-4 mt-4 pb-8"
         >
           <div>
-            <div className="w-[18%] max-w-[64px] aspect-square bg-[#f66b1e]/10 rounded-full flex items-center justify-center mx-auto mb-3 relative">
-              <span className="text-[32px] absolute">🎊</span>
+            <div className="w-[120px] h-[120px] mx-auto mb-3">
+              <img src="/assets/tiger_hello.png" alt="Tiger Hello Mascot" className="w-full h-full object-contain" />
             </div>
             <h2 className="text-[18px] font-extrabold text-[#222222] mb-1.5">{t.learn.completeTitle}</h2>
             <p className="text-[#575757] font-medium text-[13px]">{t.learn.completeDesc}</p>
@@ -54,9 +54,6 @@ export default function CompleteScreen({ expression, feedback, onRestart }: Comp
       </div>
 
       <div className="bg-white flex flex-col items-center px-6 pb-4 pt-2 relative">
-        <div className="absolute -top-[82px] right-6 w-[115px] h-[115px] pointer-events-none z-20">
-          <img src="/assets/tiger_hello.png" alt="Tiger Hello Mascot" className="w-full h-full object-contain" />
-        </div>
         <BottomButton onClick={() => navigateTo("/dictionary")} className="!mb-4 relative z-10">
           {t.learn.viewDict}
         </BottomButton>

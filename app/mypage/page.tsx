@@ -31,9 +31,8 @@ export default function MyPage() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white relative overflow-hidden">
-      {/* Scrollable Container */}
-      <div className="absolute inset-0 pb-[80px] w-full overflow-y-auto [&::-webkit-scrollbar]:hidden pt-6 flex flex-col">
+    <div className="flex flex-col h-full bg-white overflow-hidden">
+      <div className="flex-1 flex flex-col pt-6 overflow-hidden">
         
         {/* Page Title & Back Button */}
         <div className="px-5 flex items-center mb-8 relative shrink-0">
@@ -46,7 +45,7 @@ export default function MyPage() {
           </div>
         </div>
 
-        <div className="px-5 flex flex-col space-y-5 pb-[20px] flex-1 justify-center">
+        <div className="px-5 flex flex-col space-y-5 pb-6 flex-1 justify-center">
           
           
           {/* Profile Info */}

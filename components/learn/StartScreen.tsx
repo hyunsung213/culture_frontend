@@ -100,29 +100,6 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
   return (
     <div className="flex flex-col h-full relative overflow-hidden bg-white">
 
-
-      {/* Fixed Header & Word of the Day Card (Absolute Overlay) */}
-      <div className="absolute top-0 left-0 w-full z-50 bg-white/40 backdrop-blur-md pt-[4%] pb-[4%] px-6">
-        <h1 className="text-[22px] font-black text-[#222222]">{t.start.greeting}</h1>
-        <p className="text-[#575757] text-[13px] font-medium mt-1">{t.start.greetingDesc}</p>
-
-        {/* Word of the Day Card */}
-        <div className="bg-white/60 backdrop-blur-lg rounded-[20px] p-[5%] shadow-[0_8px_20px_rgba(0,0,0,0.03)] relative mt-[5%]">
-          <div className="flex justify-between items-start mb-[2%]">
-            <span className="text-[#f66b1e] font-bold text-[12px]">{t.learn.wordOfTheDay}</span>
-          </div>
-          <h2 className="text-[24px] font-black text-[#222222] flex items-end gap-2 mb-[2%]">
-            {expression ? expression.korean : "..."}
-            <span className="text-[14px] font-medium text-[#575757] pb-0.5">
-              {expression ? expression.romanization : ""}
-            </span>
-          </h2>
-          <p className="text-[#222222] text-[12px] font-medium leading-relaxed">
-            {expression ? expression.shortMeaningKo : t.start.loadingExpression}
-          </p>
-        </div>
-      </div>
-
       {/* Custom Progress Bar on the Right */}
       <div className="absolute right-2 top-1/2 -translate-y-1/2 h-[150px] w-[4px] bg-[#f8f8f8] rounded-full z-40 overflow-hidden shadow-inner flex flex-col justify-start">
         <div 
@@ -131,15 +108,38 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
         />
       </div>
 
-      {/* Scrollable Container (Only Steps) */}
+      {/* Scrollable Container */}
       <div 
-        className="absolute inset-0 pb-20 w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pt-[220px]"
+        className="absolute inset-0 pb-20 w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pt-[4%]"
         onScroll={handleScroll}
         style={{
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, transparent 210px, black 250px, black calc(100% - 100px), transparent calc(100% - 60px))',
-          maskImage: 'linear-gradient(to bottom, transparent 0px, transparent 210px, black 250px, black calc(100% - 100px), transparent calc(100% - 60px))'
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0px, black calc(100% - 100px), transparent calc(100% - 60px))',
+          maskImage: 'linear-gradient(to bottom, black 0px, black calc(100% - 100px), transparent calc(100% - 60px))'
         }}
       >
+        {/* Greeting — 스크롤 영역 최상단 */}
+        <div className="px-6 pb-[4%]">
+          <h1 className="text-[22px] font-black text-[#222222]">{t.start.greeting}</h1>
+          <p className="text-[#575757] text-[13px] font-medium mt-1">{t.start.greetingDesc}</p>
+        </div>
+
+        {/* Word of the Day Card — sticky: 스크롤 시 자연스럽게 올라와서 상단에 고정 */}
+        <div className="sticky top-0 z-50 px-6 pb-[4%]">
+          <div className="bg-white/60 backdrop-blur-lg rounded-[20px] p-[5%] shadow-[0_8px_20px_rgba(0,0,0,0.08)] border border-white/40 relative">
+            <div className="flex justify-between items-start mb-[2%]">
+              <span className="text-[#f66b1e] font-bold text-[12px]">{t.learn.wordOfTheDay}</span>
+            </div>
+            <h2 className="text-[24px] font-black text-[#222222] flex items-end gap-2 mb-[2%]">
+              {expression ? expression.korean : "..."}
+              <span className="text-[14px] font-medium text-[#575757] pb-0.5">
+                {expression ? expression.romanization : ""}
+              </span>
+            </h2>
+            <p className="text-[#222222] text-[12px] font-medium leading-relaxed">
+              {expression ? expression.shortMeaningKo : t.start.loadingExpression}
+            </p>
+          </div>
+        </div>
 
         {/* Roadmap Section */}
         <div className="w-full flex flex-col gap-[35px] pt-[40px] pb-[80px]">
@@ -149,13 +149,16 @@ export default function StartScreen({ expression, progress, onNext, onReview }: 
             <div
               key={step.id}
               id={step.status === "active" ? "step-active" : undefined}
-              className="w-full relative snap-center flex items-center justify-center cursor-pointer"
+              className="w-full relative snap-center flex items-center justify-center"
               style={{ height: '80px' }}
-              onClick={() => setActiveTooltip(step.id)}
             >
               <div 
-                className={`absolute w-[118px] h-[58px] flex items-center justify-center`}
+                className="absolute w-[118px] h-[58px] flex items-center justify-center cursor-pointer"
                 style={{ left: `${step.left}%`, transform: 'translateX(-50%)' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveTooltip(step.id);
+                }}
               >
                 {/* 3D Stone Background */}
                 <div 

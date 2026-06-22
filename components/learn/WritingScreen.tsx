@@ -27,11 +27,7 @@ export default function WritingScreen({ expression, onNext, onSubmit, isLoading,
     <div className="flex flex-col flex-1 w-full bg-white overflow-hidden relative">
       {/* Header Area */}
       <div className="px-6 pt-6 pb-2 flex-shrink-0">
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-[#f66b1e] font-extrabold text-[14px]">
-            {t.learn.wordOfTheDay}
-          </span>
-        </div>
+
         <div className="h-1.5 w-full bg-[#f8f8f8] rounded-full overflow-hidden">
           <div
             className="h-full bg-[#f66b1e] transition-all duration-300 ease-in-out rounded-full"
