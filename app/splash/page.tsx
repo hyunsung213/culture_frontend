@@ -31,18 +31,18 @@ export default function SplashPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
           src="/assets/splash_logo.png" 
           alt="이응" 
-          className="w-[53%] max-w-[120px] h-[50px] mt-[8%] object-fill" 
+          className="w-[53%] max-w-[120px] mt-[8%] object-contain" 
         />
         <motion.div 
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-col items-center mt-[8%] space-y-1 text-center"
+          className="flex flex-col items-center mt-[12%] space-y-1 text-center"
         >
-          <p className="font-semibold text-[#f66b1e] text-[13px] tracking-[0.16px]">
+          <p className="font-semibold text-[#f66b1e] text-[12px] tracking-[0.16px]">
             {t.splash.subtitle1}
           </p>
-          <p className="font-semibold text-[#f66b1e] text-[13px] tracking-[0.16px]">
+          <p className="font-semibold text-[#f66b1e] text-[12px] tracking-[0.16px]">
             {t.splash.subtitle2}
           </p>
         </motion.div>
@@ -60,7 +60,7 @@ export default function SplashPage() {
         </Link>
         <Link 
           href="/login" 
-          className="font-semibold text-[#575757] text-[14px] mt-4 hover:text-[#f66b1e] transition-colors"
+          className="font-semibold text-[#575757] text-[14px] mt-6 hover:text-[#f66b1e] transition-colors"
         >
           {t.splash.alreadyHaveAccount}
         </Link>
